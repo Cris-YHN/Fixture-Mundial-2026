@@ -10,14 +10,36 @@
 <title>Mundial 2026 🏆</title>
 <style>
 :root{
-  --navy:#0a1628;--navy2:#12213d;--navy3:#1c2f52;
   --gold:#c9a227;--gold2:#f0c040;--green2:#22a05a;
+  --radius:12px;--radius-sm:8px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --ftr-h:52px
+}
+/* TEMA OSCURO (default) */
+html{
+  --navy:#0a1628;--navy2:#12213d;--navy3:#1c2f52;
   --white:#f5f5f0;--muted:#8899aa;
   --border:rgba(255,255,255,0.08);
   --card:rgba(255,255,255,0.05);--card2:rgba(255,255,255,0.09);
-  --radius:12px;--radius-sm:8px;
-  --safe-top:env(safe-area-inset-top,0px);
-  --safe-bottom:env(safe-area-inset-bottom,0px)
+  --tbl-row:rgba(255,255,255,0.04);
+  --win-bg:rgba(26,106,60,0.2);--win-tx:#5dca9a;
+  --inp-bg:#1c2f52;--inp-focus-bg:rgba(201,162,39,0.1);
+  --q1-bg:rgba(201,162,39,0.10);--q2-bg:rgba(26,106,60,0.08);
+  --champ-bg1:rgba(201,162,39,0.15);--champ-bg2:rgba(201,162,39,0.05)
+}
+/* TEMA CLARO */
+html.light{
+  --navy:#f0f4fa;--navy2:#ffffff;--navy3:#e2e8f4;
+  --white:#1a2540;--muted:#6b7a95;
+  --border:rgba(0,0,0,0.08);
+  --card:rgba(0,0,0,0.03);--card2:rgba(0,0,0,0.05);
+  --tbl-row:rgba(0,0,0,0.025);
+  --win-bg:rgba(26,106,60,0.1);--win-tx:#166534;
+  --inp-bg:#e8eef8;--inp-focus-bg:rgba(201,162,39,0.12);
+  --q1-bg:rgba(201,162,39,0.12);--q2-bg:rgba(26,106,60,0.09);
+  --champ-bg1:rgba(201,162,39,0.12);--champ-bg2:rgba(201,162,39,0.04);
+  --gold2:#a07a10
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--navy)}
@@ -42,21 +64,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:va
 /* SCROLL */
 .main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .main::-webkit-scrollbar{display:none}
-.section{display:none;padding:10px 10px calc(var(--safe-bottom)+20px)}
+.section{display:none;padding:10px 10px calc(var(--safe-bottom) + var(--ftr-h) + 16px)}
 .section.active{display:block}
 
 /* GROUP TABLE */
 .gcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
 .ghdr{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:16px;font-weight:800;letter-spacing:1px;border-left-width:4px;border-left-style:solid}
 .gltr{width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
-.gtbl{width:100%;border-collapse:collapse;font-size:12px}
-.gtbl th{padding:4px 5px;text-align:center;color:var(--muted);font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-bottom:1px solid var(--border)}
-.gtbl th:first-child{text-align:left;padding-left:10px}
-.gtbl td{padding:5px 5px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)}
-.gtbl td:first-child{text-align:left;padding-left:10px}
+.gtbl{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+.gtbl th{padding:4px 3px;text-align:center;color:var(--muted);font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.gtbl th:first-child{text-align:left;padding-left:10px;width:42%}
+.gtbl th:nth-child(2){width:10%}
+.gtbl th:nth-child(3){width:13%}
+.gtbl th:nth-child(4),.gtbl th:nth-child(5){width:10%}
+.gtbl th:nth-child(6){width:15%}
+.gtbl td{padding:5px 5px;text-align:center;border-bottom:1px solid var(--tbl-row)}
+.gtbl td:first-child{text-align:left;padding-left:8px}
 .gtbl tr:last-child td{border-bottom:none}
-.gtbl tr.q1 td{background:rgba(201,162,39,0.1)}
-.gtbl tr.q2 td{background:rgba(26,106,60,0.08)}
+.gtbl tr.q1 td{background:var(--q1-bg)}
+.gtbl tr.q2 td{background:var(--q2-bg)}
 .pv{font-size:14px;font-weight:700;color:var(--gold2)}
 .qd{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle;flex-shrink:0}
 .q1 .qd{background:var(--gold)}.q2 .qd{background:var(--green2)}
@@ -69,7 +95,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:va
 .fgltr{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
 .fdate-label{padding:5px 12px 3px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:rgba(201,162,39,0.06);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .fdate-label:first-of-type{border-top:none}
-.mitem{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.mitem{padding:8px 10px;border-bottom:1px solid var(--tbl-row)}
 .mitem:last-child{border-bottom:none}
 .mmeta{display:flex;align-items:center;gap:5px;margin-bottom:4px}
 .mtime{font-size:10px;color:var(--muted);font-weight:600}
@@ -78,8 +104,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:va
 .mteam{flex:1;font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mteam.aw{text-align:right}
 .sw{display:flex;align-items:center;gap:3px;flex-shrink:0}
-.si{width:31px;height:29px;border-radius:6px;text-align:center;font-size:16px;font-weight:700;background:var(--navy3);border:1px solid var(--border);color:var(--white);outline:none;-webkit-appearance:none}
-.si:focus{border-color:var(--gold);background:rgba(201,162,39,0.1)}
+.si{width:31px;height:29px;border-radius:6px;text-align:center;font-size:16px;font-weight:700;background:var(--inp-bg);border:1px solid var(--border);color:var(--white);outline:none;-webkit-appearance:none}
+.si:focus{border-color:var(--gold);background:var(--inp-focus-bg)}
 .si.hs{color:var(--gold2);border-color:rgba(201,162,39,0.3)}
 .ssep{color:var(--muted);font-size:14px;font-weight:700}
 
@@ -88,12 +114,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:va
 .kogrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:4px}
 .komatch{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
 .komatch.fin{border-color:rgba(201,162,39,0.4);background:rgba(201,162,39,0.04)}
-.korow{padding:5px 7px;display:flex;align-items:center;gap:5px;border-bottom:1px solid rgba(255,255,255,0.05);min-height:26px}
+.korow{padding:5px 7px;display:flex;align-items:center;gap:5px;border-bottom:1px solid var(--tbl-row);min-height:26px}
 .korow:last-child{border-bottom:none}
-.korow.win{background:rgba(26,106,60,0.2);color:#5dca9a}
+.korow.win{background:var(--win-bg);color:var(--win-tx)}
 .konm{flex:1;font-size:10px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .konm.tbd{color:var(--muted);font-style:italic;font-size:9px}
-.koi{width:21px;height:19px;border-radius:4px;text-align:center;font-size:11px;font-weight:700;background:var(--navy3);border:1px solid var(--border);color:var(--white);outline:none;-webkit-appearance:none;flex-shrink:0}
+.koi{width:21px;height:19px;border-radius:4px;text-align:center;font-size:11px;font-weight:700;background:var(--inp-bg);border:1px solid var(--border);color:var(--white);outline:none;-webkit-appearance:none;flex-shrink:0}
 .koi:focus{border-color:var(--gold)}
 .koi.hs{color:var(--gold2)}
 
@@ -104,7 +130,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:va
 .spl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
 
 /* CHAMPION */
-.champbox{margin-top:12px;background:linear-gradient(135deg,rgba(201,162,39,0.15),rgba(201,162,39,0.05));border:1.5px solid rgba(201,162,39,0.5);border-radius:var(--radius);padding:16px;text-align:center}
+.champbox{margin-top:12px;background:var(--champ-bg1);border:1.5px solid rgba(201,162,39,0.5);border-radius:var(--radius);padding:16px;text-align:center}
 .champtr{font-size:34px;display:block;margin-bottom:5px}
 .champlbl{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
 .champnm{font-size:25px;font-weight:800;color:var(--gold2);letter-spacing:1px}
@@ -114,8 +140,34 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield}
 
-/* GRP badge colors (same palette as group color) */
+/* GRP badge colors */
 .gc{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* THEME TOGGLE BTN en header */
+.thm-btn{margin-left:auto;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:13px;cursor:pointer;color:var(--white);display:flex;align-items:center;gap:5px;transition:background .2s;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.thm-btn:active{background:var(--navy3)}
+.thm-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+
+/* FOOTER FIJO */
+.ftr{position:fixed;bottom:0;left:0;right:0;background:var(--navy2);border-top:1px solid var(--border);z-index:200;padding-bottom:var(--safe-bottom)}
+.ftr-handle{display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px 7px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.ftr-bar{width:34px;height:3px;background:var(--border);border-radius:2px;transition:background .2s}
+.ftr-handle:active .ftr-bar{background:rgba(201,162,39,0.5)}
+.ftr-hlbl{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.ftr-panel{padding:0 12px 10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;overflow:hidden;max-height:0;transition:max-height .3s ease,padding .3s ease;padding-top:0;padding-bottom:0}
+.ftr.open .ftr-panel{max-height:100px;padding-bottom:10px}
+.ftr-btn{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 9px;text-decoration:none;cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent;color:inherit}
+.ftr-btn:active{background:var(--card2)}
+.ftr-ico{font-size:17px;flex-shrink:0;line-height:1}
+.ftr-tx{display:flex;flex-direction:column;gap:1px;min-width:0}
+.ftr-ttl{font-size:10px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ftr-sub{font-size:8px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ftr-btn.gh{border-color:rgba(201,162,39,0.25);background:rgba(201,162,39,0.07)}
+.ftr-btn.gh .ftr-ttl{color:var(--gold2)}
+.ftr-btn.fb{border-color:rgba(93,202,154,0.2);background:rgba(93,202,154,0.06)}
+.ftr-btn.fb .ftr-ttl{color:#5dca9a}
+html.light .ftr-btn.fb .ftr-ttl{color:#166534}
+.ftr-credit{text-align:center;font-size:8px;color:var(--muted);opacity:.4;padding:3px 0 5px;letter-spacing:.8px}
 </style>
 </head>
 <body>
@@ -126,9 +178,15 @@ input[type=number]{-moz-appearance:textfield}
     <div class="htit">MUNDIAL <span>2026</span></div>
     <div class="hsub">FIFA World Cup</div>
   </div>
-  <div class="hrgt">
-    <div class="hnum" id="hpl">0/48</div>
-    <div class="hlbl">jugados</div>
+  <div class="hrgt" style="display:flex;align-items:center;gap:8px">
+    <div style="text-align:right">
+      <div class="hnum" id="hpl">0/104</div>
+      <div class="hlbl">jugados</div>
+    </div>
+    <button class="thm-btn" onclick="toggleTheme()" id="thm-btn" aria-label="Cambiar tema">
+      <span id="thm-ico">☀️</span>
+      <span class="thm-lbl" id="thm-lbl">Claro</span>
+    </button>
   </div>
 </div>
 
@@ -142,6 +200,38 @@ input[type=number]{-moz-appearance:textfield}
   <div id="tab-g" class="section active"></div>
   <div id="tab-f" class="section"></div>
   <div id="tab-e" class="section"></div>
+</div>
+
+<div class="ftr" id="ftr">
+  <div class="ftr-handle" onclick="toggleFooter()" role="button" aria-label="Más opciones">
+    <div class="ftr-bar"></div>
+    <span class="ftr-hlbl" id="ftr-lbl">más opciones</span>
+    <div class="ftr-bar"></div>
+  </div>
+  <div class="ftr-panel">
+    <a class="ftr-btn gh" href="https://github.com/Cris-YHN" target="_blank" rel="noopener">
+      <span class="ftr-ico">🐙</span>
+      <div class="ftr-tx">
+        <span class="ftr-ttl">GitHub</span>
+        <span class="ftr-sub">Ver perfil</span>
+      </div>
+    </a>
+    <a class="ftr-btn fb" href="https://forms.gle/1J44ZLuCaTd8D9756" target="_blank" rel="noopener">
+      <span class="ftr-ico">✉️</span>
+      <div class="ftr-tx">
+        <span class="ftr-ttl">Feedback</span>
+        <span class="ftr-sub">Sugerencias y bugs</span>
+      </div>
+    </a>
+    <button class="ftr-btn" onclick="shareApp()">
+      <span class="ftr-ico">📤</span>
+      <div class="ftr-tx">
+        <span class="ftr-ttl">Compartir</span>
+        <span class="ftr-sub">Enviar a un amigo</span>
+      </div>
+    </button>
+  </div>
+  <div class="ftr-credit">MUNDIAL 2026 · hecho con ❤️ desde Argentina</div>
 </div>
 
 <script>
@@ -349,7 +439,7 @@ function renderGroups() {
         Grupo ${g}
       </div>
       <table class="gtbl">
-        <thead><tr><th>Equipo</th><th>PJ</th><th>PTS</th><th>GF</th><th>GA</th><th>DG</th></tr></thead>
+        <thead><tr><th>Equipo</th><th>PJ</th><th>PTS</th><th>GF</th><th>GC</th><th>DG</th></tr></thead>
         <tbody>`;
     sorted.forEach((t, i) => {
       const rc = i===0?"q1":i===1?"q2":"";
@@ -620,6 +710,44 @@ function showTab(id) {
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.getElementById("tab-"+id).classList.add("active");
 }
+
+// ── FOOTER DRAWER ────────────────────────────────────────────────────────────
+let ftrOpen = false;
+function toggleFooter() {
+  ftrOpen = !ftrOpen;
+  document.getElementById('ftr').classList.toggle('open', ftrOpen);
+  document.getElementById('ftr-lbl').textContent = ftrOpen ? 'cerrar' : 'más opciones';
+}
+
+function shareApp() {
+  const url = window.location.href;
+  const txt = '⚽ Seguí el Mundial 2026 con este fixture interactivo!';
+  if (navigator.share) {
+    navigator.share({ title: 'Mundial 2026 Fixture', text: txt, url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => alert('✅ Link copiado al portapapeles'));
+  }
+}
+
+// ── TEMA ─────────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  document.getElementById('thm-ico').textContent = isLight ? '🌙' : '☀️';
+  document.getElementById('thm-lbl').textContent = isLight ? 'Oscuro' : 'Claro';
+  document.querySelector('meta[name=theme-color]').content = isLight ? '#ffffff' : '#0a1628';
+  try { localStorage.setItem('mw2026theme', isLight ? 'light' : 'dark'); } catch(e){}
+}
+// Restaurar tema guardado
+(function(){
+  try {
+    if(localStorage.getItem('mw2026theme') === 'light') {
+      document.documentElement.classList.add('light');
+      document.getElementById('thm-ico').textContent = '🌙';
+      document.getElementById('thm-lbl').textContent = 'Oscuro';
+      document.querySelector('meta[name=theme-color]').content = '#ffffff';
+    }
+  } catch(e){}
+})();
 
 // INIT
 renderGroups();
