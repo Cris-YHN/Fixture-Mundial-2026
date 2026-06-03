@@ -199,7 +199,7 @@ html.light .ftr-btn.fb .ftr-ttl{color:#166534}
 .ftr-credit{text-align:center;font-size:8px;color:var(--muted);opacity:.4;padding:3px 0 5px;letter-spacing:.8px}
 
 /* ── CONVOCADOS ──────────────────────────────────────────────────────────── */
-.cv-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.cv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
 .cv-stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 6px;text-align:center}
 .cv-stat-n{font-size:18px;font-weight:800;color:var(--gold2);line-height:1}
 .cv-stat-l{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;line-height:1.2}
@@ -2949,7 +2949,7 @@ function renderConvocados() {
     + '<div class="cv-stat"><div class="cv-stat-n">'+st.teams+'</div><div class="cv-stat-l">Selecciones</div></div>'
     + '<div class="cv-stat"><div class="cv-stat-n">'+st.total+'</div><div class="cv-stat-l">Jugadores</div></div>'
     + '<div class="cv-stat"><div class="cv-stat-n">'+st.avg+'</div><div class="cv-stat-l">Edad prom.</div></div>'
-    + '<div class="cv-stat"><div class="cv-stat-n">'+st.pos.fwd+'</div><div class="cv-stat-l">Delanteros</div></div>'
+    
     + '</div>';
 
   // Buscador
@@ -2957,7 +2957,7 @@ function renderConvocados() {
     + '<span class="cv-search-ico">🔍</span>'
     + '<input class="cv-search" type="search" placeholder="Buscar jugador o selección..." '
     + 'value="'+cvState.q.replace(/"/g,'&quot;')+'" '
-    + 'oninput="cvSearch(this.value)" />'
+    + 'id="cv-search-input" oninput="cvSearch(this.value)" />'
     + '</div>';
 
   // Filtros por grupo
@@ -2997,9 +2997,12 @@ function renderConvocados() {
       h += '<div class="cv-body">';
 
       // DT
-      h += '<div class="cv-dt">'
+      h += '<div class="cv-dt" style="border-left:3px solid #3498db">'
         + '<span class="cv-dt-ico">🧑‍💼</span>'
-        + '<div><div class="cv-dt-label">Director Técnico</div><div class="cv-dt-name">'+sq.dt+'</div></div>'
+        + '<div>'
+        + '<div class="cv-dt-label" style="color:#3498db">Director Técnico</div>'
+        + '<div class="cv-dt-name">'+sq.dt+'</div>'
+        + '</div>'
         + '</div>';
 
       // Posiciones
@@ -3014,8 +3017,10 @@ function renderConvocados() {
           if(!show.length) return;
         }
 
+        var posColors = {gk:'#e74c3c', def:'#f0c040', mid:'#2ecc71', fwd:'#9b59b6'};
+        var pc = posColors[pos] || 'var(--muted)';
         h += '<div class="cv-pos-section">'
-          + '<div class="cv-pos-label">'+POS_ICO[pos]+' '+POS_LABEL[pos]+'</div>';
+          + '<div class="cv-pos-label" style="color:'+pc+';border-bottom-color:'+pc+'44">'+POS_ICO[pos]+' '+POS_LABEL[pos]+'</div>';
 
         show.forEach(function(pl, i) {
           var isHL = q && pl.name.toLowerCase().indexOf(q) !== -1;
@@ -3034,7 +3039,20 @@ function renderConvocados() {
     h += '</div>'; // cv-team-card
   });
 
+    // Guardar estado del buscador antes de re-renderizar
+  var _prevFocus = document.activeElement && document.activeElement.id === 'cv-search-input';
+  var _prevCursor = _prevFocus ? document.activeElement.selectionStart : null;
+
   document.getElementById('tab-v').innerHTML = h;
+
+  // Restaurar foco y posición del cursor inmediatamente
+  if(_prevFocus) {
+    var _inp = document.getElementById('cv-search-input');
+    if(_inp) {
+      _inp.focus();
+      try { _inp.setSelectionRange(_prevCursor, _prevCursor); } catch(e) {}
+    }
+  }
 }
 
 function cvToggle(team) {
